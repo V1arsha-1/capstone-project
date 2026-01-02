@@ -11,8 +11,8 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      BACKEND_IMAGE: yourdockerhubusername/capstone-backend:latest
-      FRONTEND_IMAGE: yourdockerhubusername/capstone-frontend:latest
+      BACKEND_IMAGE: varshap100/capstone-backend:latest
+      FRONTEND_IMAGE: varshap100/capstone-frontend:latest
 
     steps:
     #1️heckout the repository
@@ -28,7 +28,7 @@ jobs:
       uses: docker/login-action@v2
       with:
         username: ${{ secrets.DOCKER_HUB_USERNAME }}
-        password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
+        password: ${{ secrets.DOCKER_PASSWORD }}
 
     # 4️⃣ Build backend Docker image
     - name: Build backend image
