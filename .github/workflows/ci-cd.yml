@@ -61,4 +61,26 @@ jobs:
       # 9️⃣ Push frontend image
       - name: Push frontend image
         run: docker push $FRONTEND_IMAGE
+  deploy:
+    needs: build-and-push
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Deploy to server using SSH
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ secrets.DEPLOY_HOST }}
+          username: ${{ secrets.DEPLOY_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            docker pull varshap100/capstone-backend:latest
+            docker pull varshap100/capstone-frontend:latest
+
+            docker stop capstone-backend || true
+            docker rm capstone-backend || true
+            docker stop capstone-frontend || true
+            docker rm capstone-frontend || true
+
+            docker run -d -p 5001:5000 --name capstone-backend varshap100/capstone-backend:latest
+            docker run -d -p 8080:80 --name capstone-frontend varshap100/capstone-frontend:latest
 
