@@ -1,4 +1,4 @@
-name: CI/CD Pipeline with Trivy
+name: CI/CD Pipeline with Trivy & CD Deployment
 
 on:
   push:
@@ -65,6 +65,10 @@ jobs:
     needs: build-and-push
     runs-on: ubuntu-latest
 
+     deploy:
+    needs: build-and-push
+    runs-on: ubuntu-latest
+
     steps:
       - name: Deploy to server using SSH
         uses: appleboy/ssh-action@v1.0.0
@@ -72,6 +76,9 @@ jobs:
           host: ${{ secrets.DEPLOY_HOST }}
           username: ${{ secrets.DEPLOY_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: 22
+          timeout: 30s
+          command_timeout: 10m
           script: |
             docker pull varshap100/capstone-backend:latest
             docker pull varshap100/capstone-frontend:latest
