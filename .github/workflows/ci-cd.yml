@@ -1,4 +1,5 @@
-name: CI/CD Pipeline with Trivy
+name: CI/CD Pipeline with CD
+
 
 on:
   push:
@@ -62,3 +63,24 @@ jobs:
       - name: Push frontend image
         run: docker push $FRONTEND_IMAGE
 
+  deploy:
+    needs: build-and-push
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Deploy to server via SSH
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          username: ${{ secrets.SERVER_USER }}
+          key: ${{ secrets.SERVER_SSH_KEY }}
+          script: |
+            docker pull varshap100/capstone-backend:latest
+            docker pull varshap100/capstone-frontend:latest
+
+            docker stop capstone-backend || true
+            docker rm capstone-backend || true
+
+            docker run -d -p 5001:5000 \
+              --name capstone-backend \
+              varshap100/capstone-backend:latest
