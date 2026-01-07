@@ -9,7 +9,7 @@ on:
       - main
 
 jobs:
-  build-and-scan:
+  build-test-scan:
     name: Build, Test & Security Scan
     runs-on: ubuntu-latest
 
@@ -27,46 +27,42 @@ jobs:
         uses: docker/setup-buildx-action@v3
 
       # ---------------------------
-      # Build Backend Docker Image
+      # Build Backend Image
       # ---------------------------
       - name: Build backend Docker image
         run: |
           docker build -t capstone-backend:latest ./backend
 
       # ---------------------------
-      # Build Frontend Docker Image
+      # Build Frontend Image
       # ---------------------------
       - name: Build frontend Docker image
         run: |
           docker build -t capstone-frontend:latest ./frontend
 
       # ---------------------------
-      # Install Trivy
-      # ---------------------------
-      - name: Install Trivy
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y wget
-          wget https://github.com/aquasecurity/trivy/releases/latest/download/trivy_0.50.1_Linux-64bit.deb
-          sudo dpkg -i trivy_0.50.1_Linux-64bit.deb
-
-      # ---------------------------
-      # Trivy Scan - Backend Image
+      # Trivy Scan - Backend
       # ---------------------------
       - name: Trivy scan backend image
-        run: |
-          trivy image --severity HIGH,CRITICAL capstone-backend:latest
+        uses: aquasecurity/trivy-action@0.20.0
+        with:
+          image-ref: capstone-backend:latest
+          severity: HIGH,CRITICAL
+          exit-code: 1
 
       # ---------------------------
-      # Trivy Scan - Frontend Image
+      # Trivy Scan - Frontend
       # ---------------------------
       - name: Trivy scan frontend image
-        run: |
-          trivy image --severity HIGH,CRITICAL capstone-frontend:latest
+        uses: aquasecurity/trivy-action@0.20.0
+        with:
+          image-ref: capstone-frontend:latest
+          severity: HIGH,CRITICAL
+          exit-code: 1
 
       # ---------------------------
-      # CI Completion
+      # Pipeline Success
       # ---------------------------
-      - name: CI pipeline completed
+      - name: CI completed
         run: echo "CI/CD pipeline completed successfully 🚀"
 
