@@ -1,0 +1,9 @@
+version: "3.9"
+
+services:
+  backend:
+    image: v1arsha-1/backend-app:latest
+    env_file:
+      - env/prod.env
+    ports:
+      - "80:8000"
