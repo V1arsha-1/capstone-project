@@ -1,0 +1,47 @@
+name: CD - Staging Deployment
+
+on:
+  workflow_dispatch   # manual trigger
+
+jobs:
+  deploy:
+    name: Deploy to Staging
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Pull latest images (simulated)
+        run: |
+          echo "Pulling latest Docker images..."
+          sleep 2
+          echo "Images pulled successfully"
+
+      - name: Stop old containers (simulated)
+        run: |
+          echo "Stopping old containers..."
+          sleep 2
+          echo "Old containers stopped"
+
+      - name: Start new containers (simulated)
+        run: |
+          echo "Starting new containers..."
+          sleep 2
+          echo "New containers started"
+
+      - name: Run database migrations (simulated)
+        run: |
+          echo "Running database migrations..."
+          sleep 2
+          echo "Database migrations completed"
+
+      - name: Verify deployment
+        run: |
+          echo "Verifying deployment health..."
+          sleep 2
+          echo "Application is healthy"
+
+      - name: Deployment successful
+        run: echo "🎉 CD Deployment to Staging Successful"
+
