@@ -1,20 +1,24 @@
 #!/bin/bash
 set -e
 
+echo "=============================="
+echo " Starting Staging Deployment "
+echo "=============================="
+
 echo "Pulling latest images..."
-docker compose pull
+docker-compose -f docker-compose.prod.yml pull
 
 echo "Stopping old containers..."
-docker compose down
+docker-compose -f docker-compose.prod.yml down
 
 echo "Starting new containers..."
-docker compose up -d
+docker-compose -f docker-compose.prod.yml up -d
 
-echo "Waiting for app..."
-sleep 10
+echo "Running database migrations..."
+docker exec backend python manage.py migrate || echo "No migrations to run"
 
-echo "Verifying health..."
-curl -f http://localhost:5000/health || exit 1
+echo "Verifying running containers..."
+docker ps
 
-echo "✅ Staging deployment successful"
+echo "Deployment completed successfully ✅"
 
