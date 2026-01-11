@@ -192,3 +192,14 @@ This confirms the project’s full automation capability.
 This project successfully demonstrates the design and implementation of a modern CI/CD pipeline using GitHub Actions, Docker, and Trivy. It automates building, testing, security scanning, image publishing, and deployment workflows while following DevOps best practices.
 
 Although a real staging server was not available, the deployment logic is fully demonstrated through scripts and a simulated CD workflow. The project can be easily extended to real cloud or on-premise environments in the future.
+
+## 🎥 Project Demo Video
+
+This demo video demonstrates the complete CI/CD workflow, including:
+https://drive.google.com/file/d/1W1qhw08D31mp9_LKdLoRi6CLAGs9x7Gd/view?usp=sharing
+
+- CI pipeline execution using GitHub Actions
+- Docker image build and push to Docker Hub
+- CD staging deployment
+- Deployment and rollback scripts
+
