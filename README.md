@@ -7,7 +7,7 @@ This project focuses on building a complete CI/CD pipeline for a containerized w
 The project demonstrates real-world DevOps practices, including automation, containerization, security scanning, environment separation, and deployment scripting.
 
 1.Application Architecture
-
+ 
 The application follows a multi-service architecture:
 
 Frontend: A web-based frontend application containerized using Docker
